@@ -1,0 +1,5 @@
+# HTTrack Website Copier Cookie File
+# This file format is compatible with Netscape cookies
+studentportal.bdu.edu.et	TRUE	/	FALSE	1999999999	.AspNetCore.Antiforgery.OcxfefbGgpc	CfDJ8Fr53OLF3mxBs9o8gIZS5ACj-J-GH_WK3jGgJbFzAolRK6dAW8ZwZSjScylpMhqTVoFlJPmOb1y_P-n7cKWEeCIfwp46d9_8k4RW9T-8nsy0ERbtbo6dOMjPbQhtd2InEUtrRTaY-t4habkffJ53xoM
+studentportal.bdu.edu.et	TRUE	/	FALSE	1999999999	samesite	lax
+

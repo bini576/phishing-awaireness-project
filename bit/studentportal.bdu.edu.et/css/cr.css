@@ -1,0 +1,310 @@
+﻿.widget-container {
+    /*margin-right: 320px;*/
+    padding: 2px;
+    /*max-width: 690px;*/
+    /*min-width: 300px;*/
+}
+
+#form {
+    margin-top: 10px;
+}
+
+#companySelectText {
+    display: none;
+}
+
+.optionsLeft {
+    padding: 2px;
+    position: relative;
+    bottom: 0;
+    right: 0;
+    /*width: 260px;*/
+    top: 0;
+    background-color: rgba(191, 191, 191, 0.15);
+    /*        width:fit-content;*/
+    border: solid;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+    border-color: darkgray;
+    padding-right: 12px !important
+}
+
+.optionsRight {
+    padding: 2px;
+    position: relative;
+    bottom: 0;
+    right: 0;
+    /*width: 260px;*/
+    top: 0;
+    background-color: rgba(191, 191, 191, 0.15);
+    /*        width:fit-content;*/
+    border: solid;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+    border-color: darkgray;
+    width: 400px;
+}
+
+.caption {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.option {
+    /*  margin-top: 5px;*/
+}
+
+.dx-field-label {
+    float: left;
+    text-align: right !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px !important;
+    padding: 3px 5px 4px 0 !important;
+    width: 50% !important;
+}
+
+dx-field-value-static, .dx-field-value:not(.dx-switch):not(.dx-checkbox):not(.dx-button) {
+    width: 90% !important;
+}
+
+.dx-selectbox-container {
+    /*height: 25px !important;*/
+}
+
+.dx-texteditor-input {
+    font-size: 14px !important;
+}
+
+hr {
+    height: 5px;
+    background-image: linear-gradient(90deg, #6a5f5f, transparent);
+    border: 0;
+    margin: 1px 0 !important;
+}
+
+.vertical-line {
+    display: inline-block;
+    border-left: 2px solid #ccc;
+    background-image: linear-gradient(90deg, red, transparent);
+    margin: 0 2px;
+    height: 30px;
+    text-align: center;
+}
+
+.dx-checkbox-text {
+    White-space: nowrap;
+    padding-left: 20px;
+}
+
+.dx-checkbox-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid #ff5722;
+    background-color: #fff;
+}
+
+.dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-focused) > td, .dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-focused) > tr > td, .dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-focused):hover > td, .dx-datagrid-rowsview .dx-selection.dx-row:not(.dx-row-focused):hover > tr > td {
+    background-color: #70777c !important;
+    color: #fff !important;
+}
+
+.dx-datagrid-rowsview .dx-row-focused.dx-data-row .dx-command-edit:not(.dx-focused) .dx-link, .dx-datagrid-rowsview .dx-row-focused.dx-data-row > td:not(.dx-focused), .dx-datagrid-rowsview .dx-row-focused.dx-data-row > tr > td:not(.dx-focused) {
+    background-color: #70777c !important;
+    color: #fff !important;
+}
+
+.dx-datagrid-content .dx-datagrid-table .dx-row .dx-editor-cell .dx-texteditor, .dx-datagrid-content .dx-datagrid-table .dx-row .dx-editor-cell .dx-texteditor-container {
+    background-color: #fff !important;
+    color: #110e0e !important;
+}
+
+.dx-checkbox-checked .dx-checkbox-icon {
+    background-color: rgb(0 0 0 / 24%) !important;
+}
+
+.dx-datagrid-borders > .dx-datagrid-header-panel {
+    height: 60px !important;
+}
+
+.dx-datagrid .dx-row > td, .dx-datagrid .dx-row > tr > td {
+    padding: 1.5px !important;
+    font-size: 11px !important;
+}
+
+.ass-type {
+    font-size: 9px;
+}
+
+.dx-dropdownlist-popup-wrapper .dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item-content {
+    /*font-size: 12px !important;*/
+}
+
+.txtField {
+    display: none;
+}
+
+.dx-datagrid-borders .dx-datagrid-headers .dx-datagrid-table {
+    border-bottom-width: 1px;
+    background-color: #cacaca;
+}
+
+.button-prepare {
+    background: linear-gradient(to bottom right, #545152, #c2bfbd);
+    border: 0;
+    border-radius: 12px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: -apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 2;
+    outline: transparent;
+    padding: 0 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: box-shadow .2s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 150px;
+}
+
+    .button-prepare:not([disabled]):focus {
+        box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+    }
+
+    .button-prepare:not([disabled]):hover {
+        box-shadow: 0 0 0.25rem rgb(0 0 0 / 50%), -0.125rem -0.125rem 1rem rgb(0 0 0 / 54%), 0.125rem 0.125rem 1rem rgb(179 174 170 / 50%);
+    }
+
+.button-reject {
+    background: linear-gradient(to bottom right, #EF4765, #FF9A5A);
+    border: 0;
+    border-radius: 12px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: -apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 2;
+    outline: transparent;
+    padding: 0 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: box-shadow .2s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+    .button-reject:not([disabled]):focus {
+        box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+    }
+
+    .button-reject:not([disabled]):hover {
+        box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+    }
+
+.button-approve {
+    background: linear-gradient(to bottom right, #6f9978, #5c6c61);
+    border: 0;
+    border-radius: 12px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: -apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 2;
+    outline: transparent;
+    padding: 0 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: box-shadow .2s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    margin-top: 5px;
+}
+
+    .button-approve:not([disabled]):focus {
+        box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+    }
+
+    .button-approve:not([disabled]):hover {
+        box-shadow: 0 0 0.25rem rgb(0 0 0 / 50%), -0.125rem -0.125rem 1rem rgb(47 90 79 / 50%), 0.125rem 0.125rem 1rem rgb(73 82 76 / 50%);
+    }
+
+.dx-toolbar-button.dx-toolbar-text-auto-hide .dx-button .dx-icon {
+    width: 24px;
+    height: 24px;
+    background-position: 0 0;
+    background-size: 24px 24px;
+    padding: 0;
+    font-size: 24px;
+    text-align: center;
+    line-height: 24px;
+    margin-right: 0;
+    margin-left: 0;
+    background-color: #a39d9d;
+    border-radius: 50%;
+}
+
+.dx-pager .dx-page-sizes .dx-selection, .dx-pager .dx-pages .dx-selection {
+    font-weight: 500;
+    background-color: #b0aaa9;
+    color: #fff;
+}
+
+
+#gridContainer .dx-datagrid-header-panel {
+    padding: 0;
+    /*background-color: rgba(85, 149, 222, 0.6);*/
+}
+
+    #gridContainer .dx-datagrid-header-panel .dx-toolbar {
+        margin: 0;
+        padding-right: 20px;
+        background-color: rgb(129 126 126 / 15%)
+    }
+
+    #gridContainer .dx-datagrid-header-panel .dx-toolbar-items-container {
+        height: 70px;
+    }
+
+    #gridContainer .dx-datagrid-header-panel .dx-toolbar-before .dx-toolbar-item:not(:first-child) {
+        background-color: #ccc;
+    }
+
+    #gridContainer .dx-datagrid-header-panel .dx-toolbar-before .dx-toolbar-item:last-child {
+        padding-right: 10px;
+    }
+
+    #gridContainer .dx-datagrid-header-panel .dx-button {
+        margin: auto 0;
+    }
+
+.dx-dropdownlist-popup-wrapper .dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item-content {
+    font-size: 13px !important;
+    line-height: 13px !important;
+}

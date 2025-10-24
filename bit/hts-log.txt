@@ -1,0 +1,12 @@
+HTTrack3.49-6 launched on Sat, 20 Sep 2025 11:10:32 at https://studentportal.bdu.edu.et/
+(winhttrack https://studentportal.bdu.edu.et/ -O "/home/killshot/Desktop/intern/bit" -%v )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+11:10:57	Error: 	"Not Found" (404) at link https://studentportal.bdu.edu.et/css/grid.css (from https://studentportal.bdu.edu.et/)
+
+HTTrack Website Copier/3.49-6 mirror complete in 25 seconds : 25 links scanned, 23 files written (7311813 bytes overall) [7318264 bytes received at 292730 bytes/sec]
+(1 errors, 0 warnings, 0 messages)

