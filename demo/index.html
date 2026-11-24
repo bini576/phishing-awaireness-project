@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Phishing Awareness — Interactive Demo | Biniyam Ademasu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    :root {
+      --bg: #070a12; --bg2: #0d1117; --bg3: #0f1923;
+      --cyan: #00d4ff; --green: #00ff88;
+      --red: #ff3b3b; --amber: #f59e0b;
+      --text: #e2e8f0; --muted: #64748b;
+      --border: #1e3a5f;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-logo { color: var(--cyan); font-family: 'Fira Code'; font-weight: 700; font-size: 1rem; text-decoration: none; }
+    .nav-steps { display: flex; gap: 8px; }
+    .step-pill {
+      padding: 4px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--border); color: var(--muted); cursor: pointer; transition: all 0.3s;
+    }
+    .step-pill.active { background: var(--cyan); color: #000; border-color: var(--cyan); }
+    .step-pill.done { background: rgba(0,255,136,0.15); color: var(--green); border-color: var(--green); }
+
+    /* ── PAGES ── */
+    .page { display: none; min-height: calc(100vh - 57px); }
+    .page.active { display: flex; flex-direction: column; }
+
+    /* ══════════════════════════════
+       PAGE 0 — LANDING / INTRO
+    ══════════════════════════════ */
+    #page-intro {
+      align-items: center; justify-content: center;
+      text-align: center; padding: 60px 24px;
+      background: radial-gradient(ellipse at center, #0a1628 0%, var(--bg) 70%);
+    }
+    .intro-icon { font-size: 5rem; margin-bottom: 20px; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+    .intro-title { font-size: 2.4rem; font-weight: 800; color: #fff; }
+    .intro-title span { color: var(--cyan); }
+    .intro-subtitle { color: var(--muted); margin: 12px auto; max-width: 600px; line-height: 1.7; font-size: 1rem; }
+    .disclaimer-box {
+      background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.4);
+      border-radius: 12px; padding: 16px 24px; margin: 24px auto; max-width: 600px; text-align: left;
+    }
+    .disclaimer-box i { color: var(--amber); margin-right: 8px; }
+    .disclaimer-box strong { color: var(--amber); }
+    .disclaimer-box p { color: #94a3b8; font-size: 0.9rem; margin-top: 6px; line-height: 1.6; }
+    .stages-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px; max-width: 800px; margin: 32px auto 0;
+    }
+    .stage-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+      padding: 20px; text-align: center; transition: all 0.3s;
+    }
+    .stage-card:hover { border-color: var(--cyan); transform: translateY(-3px); }
+    .stage-card .stage-num { font-size: 2rem; margin-bottom: 8px; }
+    .stage-card h3 { color: var(--cyan); font-size: 0.9rem; margin-bottom: 6px; }
+    .stage-card p { color: var(--muted); font-size: 0.8rem; }
+    .btn-start {
+      display: inline-block; margin-top: 36px;
+      background: linear-gradient(135deg, var(--cyan), #0066ff);
+      color: #000; font-weight: 800; font-size: 1rem;
+      padding: 14px 40px; border-radius: 50px; border: none; cursor: pointer;
+      transition: all 0.3s; text-decoration: none; letter-spacing: 0.5px;
+    }
+    .btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,255,0.3); }
+
+    /* ══════════════════════════════
+       PAGE 1 — FAKE LOGIN (PHISH)
+    ══════════════════════════════ */
+    #page-phish {
+      background: #f5f5f5; color: #333;
+      flex-direction: column; align-items: center; justify-content: flex-start; padding: 0;
+    }
+    /* Fake university header */
+    .fake-header {
+      width: 100%; background: #003366; color: #fff;
+      padding: 10px 24px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .fake-header .uni-name { font-weight: 700; font-size: 1.1rem; }
+    .fake-header .fake-url {
+      background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 4px;
+      font-size: 0.75rem; font-family: 'Fira Code';
+    }
+    .fake-subheader {
+      width: 100%; background: #0055a5; color: #fff;
+      padding: 6px 24px; font-size: 0.8rem;
+    }
+    .login-container {
+      width: 100%; max-width: 440px; margin: 40px auto;
+      background: #fff; border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15); overflow: hidden;
+    }
+    .login-header {
+      background: #003366; color: #fff; padding: 20px 24px; text-align: center;
+    }
+    .login-header h2 { font-size: 1.1rem; }
+    .login-header p { font-size: 0.8rem; opacity: 0.8; margin-top: 4px; }
+    .login-body { padding: 28px 24px; }
+    .login-body label { display: block; font-size: 0.85rem; color: #555; margin-bottom: 4px; font-weight: 600; }
+    .login-body input {
+      width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px;
+      font-size: 0.9rem; margin-bottom: 16px; background: #fafafa;
+    }
+    .login-body input:focus { outline: none; border-color: #0055a5; }
+    .fake-btn {
+      width: 100%; background: #0055a5; color: #fff; border: none;
+      padding: 12px; border-radius: 6px; font-size: 1rem; font-weight: 700; cursor: pointer;
+    }
+    .fake-btn:hover { background: #003366; }
+    .fake-footer-links { display: flex; justify-content: space-between; margin-top: 16px; font-size: 0.8rem; color: #0055a5; }
+    .fake-footer-links a { color: #0055a5; text-decoration: none; }
+    .phish-hint {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.85); color: #fff; padding: 10px 20px; border-radius: 50px;
+      font-size: 0.8rem; font-family: 'Fira Code'; border: 1px solid var(--border);
+      animation: hint-blink 2s infinite;
+    }
+    @keyframes hint-blink { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+    /* ══════════════════════════════
+       PAGE 2 — CAUGHT! REVEAL
+    ══════════════════════════════ */
+    #page-reveal {
+      align-items: center; justify-content: center;
+      text-align: center; padding: 60px 24px;
+      background: radial-gradient(ellipse at center, #1a0a0a 0%, var(--bg) 70%);
+    }
+    .reveal-icon { font-size: 5rem; margin-bottom: 16px; animation: shake 0.5s ease; }
+    @keyframes shake {
+      0%,100%{transform:rotate(0)} 25%{transform:rotate(-5deg)} 75%{transform:rotate(5deg)}
+    }
+    .reveal-title { font-size: 2.2rem; font-weight: 800; color: var(--red); margin-bottom: 8px; }
+    .reveal-subtitle { color: var(--muted); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+    .captured-box {
+      background: rgba(255,59,59,0.08); border: 1px solid rgba(255,59,59,0.3);
+      border-radius: 12px; padding: 20px 28px; margin: 24px auto; max-width: 480px;
+      text-align: left;
+    }
+    .captured-box h3 { color: var(--red); margin-bottom: 12px; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; }
+    .captured-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,59,59,0.15); }
+    .captured-row:last-child { border: none; }
+    .captured-label { color: var(--muted); font-size: 0.85rem; }
+    .captured-value { color: var(--red); font-family: 'Fira Code'; font-size: 0.85rem; font-weight: 600; }
+    .red-flags-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px; max-width: 700px; margin: 24px auto;
+    }
+    .red-flag-item {
+      background: var(--bg2); border: 1px solid rgba(255,59,59,0.3);
+      border-radius: 10px; padding: 14px 16px; text-align: left;
+    }
+    .red-flag-item i { color: var(--red); margin-right: 8px; }
+    .red-flag-item strong { color: var(--text); font-size: 0.9rem; display: block; margin-bottom: 4px; }
+    .red-flag-item p { color: var(--muted); font-size: 0.78rem; line-height: 1.5; }
+
+    /* ══════════════════════════════
+       PAGE 3 — COMPARISON
+    ══════════════════════════════ */
+    #page-compare {
+      padding: 40px 24px;
+      background: var(--bg);
+    }
+    .compare-title { text-align: center; font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .compare-sub { text-align: center; color: var(--muted); margin-bottom: 32px; }
+    .compare-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 900px; margin: 0 auto 32px;
+    }
+    @media(max-width:640px){ .compare-grid { grid-template-columns: 1fr; } }
+    .compare-card { border-radius: 12px; overflow: hidden; border: 2px solid; }
+    .compare-card.real { border-color: var(--green); }
+    .compare-card.fake { border-color: var(--red); }
+    .compare-card-header {
+      padding: 10px 16px; display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.85rem;
+    }
+    .compare-card.real .compare-card-header { background: rgba(0,255,136,0.12); color: var(--green); }
+    .compare-card.fake .compare-card-header { background: rgba(255,59,59,0.12); color: var(--red); }
+    .compare-card-body { padding: 16px; background: var(--bg2); }
+    .diff-row { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+    .diff-row:last-child { border: none; }
+    .diff-icon { font-size: 1rem; margin-top: 2px; }
+    .diff-label { font-size: 0.8rem; font-weight: 700; color: var(--text); display: block; }
+    .diff-value { font-size: 0.78rem; color: var(--muted); font-family: 'Fira Code'; }
+
+    /* ══════════════════════════════
+       PAGE 4 — QUIZ
+    ══════════════════════════════ */
+    #page-quiz {
+      padding: 40px 24px;
+      background: var(--bg);
+      align-items: center; justify-content: flex-start;
+    }
+    .quiz-wrap { max-width: 720px; margin: 0 auto; width: 100%; }
+    .quiz-title { text-align: center; font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .quiz-sub { text-align: center; color: var(--muted); margin-bottom: 32px; }
+    .quiz-progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 32px; }
+    .quiz-progress-fill { height: 100%; background: var(--cyan); border-radius: 2px; transition: width 0.4s ease; }
+    .question-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 28px;
+      display: none;
+    }
+    .question-card.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    .q-num { color: var(--cyan); font-size: 0.8rem; font-family: 'Fira Code'; margin-bottom: 8px; letter-spacing: 1px; }
+    .q-text { font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 20px; line-height: 1.6; }
+    .q-image { width: 100%; border-radius: 8px; margin-bottom: 16px; border: 1px solid var(--border); overflow: hidden; }
+    .q-image-content {
+      background: #1a1a2e; padding: 16px; font-family: 'Fira Code'; font-size: 0.8rem; color: #94a3b8;
+    }
+    .quiz-options { display: grid; gap: 10px; }
+    .quiz-option {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+      padding: 12px 16px; cursor: pointer; font-size: 0.9rem; color: var(--text);
+      transition: all 0.2s; display: flex; align-items: center; gap: 10px;
+    }
+    .quiz-option:hover { border-color: var(--cyan); background: rgba(0,212,255,0.05); }
+    .quiz-option.correct { border-color: var(--green); background: rgba(0,255,136,0.08); color: var(--green); }
+    .quiz-option.wrong { border-color: var(--red); background: rgba(255,59,59,0.08); color: var(--red); }
+    .quiz-option.disabled { pointer-events: none; }
+    .q-explanation {
+      background: rgba(0,212,255,0.06); border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 8px; padding: 14px 16px; margin-top: 16px; font-size: 0.88rem;
+      color: #94a3b8; display: none; line-height: 1.6;
+    }
+    .q-explanation.show { display: block; animation: fadeIn 0.3s ease; }
+    .q-explanation strong { color: var(--cyan); }
+    .btn-next {
+      display: none; margin-top: 20px; background: var(--cyan); color: #000;
+      border: none; border-radius: 8px; padding: 10px 24px;
+      font-weight: 700; cursor: pointer; font-size: 0.9rem;
+    }
+    .btn-next.show { display: inline-block; }
+
+    /* Score screen */
+    .score-screen {
+      text-align: center; padding: 40px; display: none;
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+    }
+    .score-screen.show { display: block; animation: fadeIn 0.5s ease; }
+    .score-circle {
+      width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; font-weight: 800; font-family: 'Fira Code';
+    }
+    .score-tips { max-width: 500px; margin: 20px auto; text-align: left; }
+    .tip-item { display: flex; gap: 10px; padding: 8px 0; color: var(--muted); font-size: 0.88rem; }
+    .tip-item i { color: var(--green); margin-top: 2px; }
+
+    /* ══════════════════════════════
+       PAGE 5 — TIPS & ABOUT
+    ══════════════════════════════ */
+    #page-tips { padding: 40px 24px; }
+    .tips-wrap { max-width: 820px; margin: 0 auto; }
+    .tips-title { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .tips-sub { color: var(--muted); margin-bottom: 32px; }
+    .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 16px; margin-bottom: 40px; }
+    .tip-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+      padding: 20px; transition: all 0.3s;
+    }
+    .tip-card:hover { border-color: var(--cyan); transform: translateY(-2px); }
+    .tip-card-icon { font-size: 2rem; margin-bottom: 12px; }
+    .tip-card h3 { color: var(--cyan); font-size: 0.9rem; margin-bottom: 6px; letter-spacing: 0.5px; }
+    .tip-card p { color: var(--muted); font-size: 0.82rem; line-height: 1.6; }
+    .about-box {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 28px;
+      display: flex; gap: 20px; align-items: flex-start;
+    }
+    .about-box i { font-size: 2.5rem; color: var(--cyan); flex-shrink: 0; }
+    .about-box h3 { color: var(--text); font-size: 1.1rem; margin-bottom: 8px; }
+    .about-box p { color: var(--muted); font-size: 0.88rem; line-height: 1.7; }
+    .about-box a { color: var(--cyan); }
+
+    /* Shared buttons */
+    .btn-primary {
+      display: inline-block; background: linear-gradient(135deg, var(--cyan), #0066ff);
+      color: #000; font-weight: 700; padding: 12px 28px;
+      border-radius: 50px; border: none; cursor: pointer;
+      font-size: 0.9rem; transition: all 0.3s; text-decoration: none; margin: 6px;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,212,255,0.25); }
+    .btn-outline {
+      display: inline-block; border: 1px solid var(--cyan); color: var(--cyan);
+      font-weight: 600; padding: 11px 26px; border-radius: 50px;
+      cursor: pointer; font-size: 0.9rem; transition: all 0.3s;
+      text-decoration: none; background: transparent; margin: 6px;
+    }
+    .btn-outline:hover { background: rgba(0,212,255,0.1); }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a href="#" class="nav-logo">🎣 Phishing Awareness Demo</a>
+  <div class="nav-steps">
+    <span class="step-pill active" onclick="goTo(0)" id="pill-0">Intro</span>
+    <span class="step-pill" onclick="goTo(1)" id="pill-1">1. The Trap</span>
+    <span class="step-pill" onclick="goTo(2)" id="pill-2">2. Reveal</span>
+    <span class="step-pill" onclick="goTo(3)" id="pill-3">3. Compare</span>
+    <span class="step-pill" onclick="goTo(4)" id="pill-4">4. Quiz</span>
+    <span class="step-pill" onclick="goTo(5)" id="pill-5">5. Protect</span>
+  </div>
+</nav>
+
+<!-- ═══ PAGE 0 — INTRO ═══ -->
+<div id="page-intro" class="page active">
+  <div class="intro-icon">🎣</div>
+  <h1 class="intro-title">Can You Spot the <span>Phishing?</span></h1>
+  <p class="intro-subtitle">
+    This interactive demo shows exactly how attackers clone real university portals
+    to steal student credentials. Experience it firsthand — in a safe, educational environment.
+  </p>
+
+  <div class="disclaimer-box">
+    <div><i class="fas fa-exclamation-triangle"></i><strong>Educational Purpose Only</strong></div>
+    <p>
+      This project was developed to raise cybersecurity awareness among students.
+      No real credentials are collected. All techniques shown are for defense education only.
+      Built by Biniyam Ademasu Afework — B.Sc. Cyber Security, Bahir Dar University.
+    </p>
+  </div>
+
+  <div class="stages-grid">
+    <div class="stage-card">
+      <div class="stage-num">🎣</div>
+      <h3>Stage 1 — The Trap</h3>
+      <p>Experience what a phishing site looks like. Try to spot the difference!</p>
+    </div>
+    <div class="stage-card">
+      <div class="stage-num">🚨</div>
+      <h3>Stage 2 — Reveal</h3>
+      <p>See what an attacker would have captured from your "login attempt".</p>
+    </div>
+    <div class="stage-card">
+      <div class="stage-num">🔍</div>
+      <h3>Stage 3 — Compare</h3>
+      <p>Side-by-side comparison of real vs fake site — spot the red flags.</p>
+    </div>
+    <div class="stage-card">
+      <div class="stage-num">🧠</div>
+      <h3>Stage 4 — Quiz</h3>
+      <p>Test your phishing detection skills with real-world scenarios.</p>
+    </div>
+  </div>
+
+  <button class="btn-start" onclick="goTo(1)">🚀 Start the Demo</button>
+  <p style="color:var(--muted); font-size:0.8rem; margin-top:16px;">5-minute interactive experience • No data collected</p>
+</div>
+
+<!-- ═══ PAGE 1 — FAKE LOGIN ═══ -->
+<div id="page-phish" class="page">
+  <!-- Fake university header -->
+  <div class="fake-header">
+    <div class="uni-name">🏛️ Bahir Dar University — Student Portal</div>
+    <div class="fake-url">🔒 studentportal.bdu-login.com</div>
+  </div>
+  <div class="fake-subheader">Academic Information System | 2025-2026 Academic Year</div>
+
+  <div class="login-container">
+    <div class="login-header">
+      <h2>Student Portal Login</h2>
+      <p>Enter your university credentials to access your account</p>
+    </div>
+    <div class="login-body">
+      <label for="fake-user">Student ID / Username</label>
+      <input type="text" id="fake-user" placeholder="e.g. BDU1234567" autocomplete="off"/>
+
+      <label for="fake-pass">Password</label>
+      <input type="password" id="fake-pass" placeholder="Enter your password"/>
+
+      <button class="fake-btn" onclick="onPhishSubmit()">🔐 Sign In</button>
+
+      <div class="fake-footer-links">
+        <a href="#">Forgot Password?</a>
+        <a href="#">Help & Support</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; padding: 10px 0 40px; color:#333; font-size:0.8rem;">
+    © 2025 Bahir Dar University. All rights reserved.
+  </div>
+
+  <div class="phish-hint" id="phish-hint">
+    👆 This is a DEMO phishing page. Try logging in to continue the simulation...
+  </div>
+</div>
+
+<!-- ═══ PAGE 2 — REVEAL ═══ -->
+<div id="page-reveal" class="page">
+  <div class="reveal-icon">🚨</div>
+  <h1 class="reveal-title">You've Been Phished!</h1>
+  <p class="reveal-subtitle">
+    If this were a real attack, your credentials would now be in an attacker's database.
+    Here's exactly what was "captured":
+  </p>
+
+  <div class="captured-box">
+    <h3><i class="fas fa-database"></i> Captured Data (Simulation)</h3>
+    <div class="captured-row">
+      <span class="captured-label">Username / Student ID</span>
+      <span class="captured-value" id="captured-user">—</span>
+    </div>
+    <div class="captured-row">
+      <span class="captured-label">Password</span>
+      <span class="captured-value" id="captured-pass">—</span>
+    </div>
+    <div class="captured-row">
+      <span class="captured-label">Timestamp</span>
+      <span class="captured-value" id="captured-time">—</span>
+    </div>
+    <div class="captured-row">
+      <span class="captured-label">Browser / Device</span>
+      <span class="captured-value" id="captured-browser">—</span>
+    </div>
+    <div class="captured-row">
+      <span class="captured-label">Phishing Domain</span>
+      <span class="captured-value">studentportal.bdu-login.com</span>
+    </div>
+    <div class="captured-row" style="border:none;">
+      <span class="captured-label">Attacker's Server</span>
+      <span class="captured-value">phishtracker.onrender.com/log</span>
+    </div>
+  </div>
+
+  <h2 style="color:var(--text); font-size:1rem; margin-bottom:16px; letter-spacing:1px; text-transform:uppercase;">
+    🚩 Red Flags You Might Have Missed:
+  </h2>
+
+  <div class="red-flags-grid">
+    <div class="red-flag-item">
+      <i class="fas fa-globe"></i>
+      <strong>Wrong Domain</strong>
+      <p>Real: <code>studentportal.bdu.edu.et</code><br>Fake: <code>studentportal.bdu-login.com</code> — a hyphen and different TLD!</p>
+    </div>
+    <div class="red-flag-item">
+      <i class="fas fa-lock"></i>
+      <strong>SSL Certificate</strong>
+      <p>Phishing sites often have valid SSL (the padlock) — it only means the connection is encrypted, NOT that the site is legitimate.</p>
+    </div>
+    <div class="red-flag-item">
+      <i class="fas fa-envelope"></i>
+      <strong>Suspicious Link Source</strong>
+      <p>Phishing links often come via email, SMS, or social media pretending to be official communications.</p>
+    </div>
+    <div class="red-flag-item">
+      <i class="fas fa-paint-brush"></i>
+      <strong>Slight Visual Differences</strong>
+      <p>Fonts, logo quality, spacing may differ slightly from the original. Attackers clone but rarely perfectly match.</p>
+    </div>
+    <div class="red-flag-item">
+      <i class="fas fa-phone"></i>
+      <strong>No Working Links</strong>
+      <p>Footer links like "About", "Contact" typically don't work on phishing pages — they're just static copies.</p>
+    </div>
+    <div class="red-flag-item">
+      <i class="fas fa-clock"></i>
+      <strong>Urgency Tactics</strong>
+      <p>"Your account will be suspended!" — attackers create panic to make you act without thinking.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:28px;">
+    <button class="btn-primary" onclick="goTo(3)">🔍 Compare Real vs Fake</button>
+    <button class="btn-outline" onclick="goTo(4)">🧠 Take the Quiz</button>
+  </div>
+</div>
+
+<!-- ═══ PAGE 3 — COMPARISON ═══ -->
+<div id="page-compare" class="page">
+  <h2 class="compare-title">🔍 Real vs Fake — Side by Side</h2>
+  <p class="compare-sub">Can you spot what makes a phishing site different from the real one?</p>
+
+  <div class="compare-grid">
+    <div class="compare-card real">
+      <div class="compare-card-header"><i class="fas fa-check-circle"></i> ✅ Real BDU Portal</div>
+      <div class="compare-card-body">
+        <div class="diff-row">
+          <span class="diff-icon">🌐</span>
+          <div>
+            <span class="diff-label">URL</span>
+            <span class="diff-value">studentportal.bdu.edu.et</span>
+          </div>
+        </div>
+        <div class="diff-row">
+          <span class="diff-icon">🏛️</span>
+          <div>
+            <span class="diff-label">Domain Owner</span>
+            <span class="diff-value">Bahir Dar University (Ethiopia)</span>
+          </div>
+        </div>
+        <div class="diff-row">
+          <span class="diff-icon">📧</span>
+          <div>
+            <span class="diff-label">Contact Links Work</span>
+            <span class="diff-value">Yes — all links functional</span>
+          </div>
+        </div>
+        <div class="diff-row">
+          <span class="diff-icon">🔑</span>
+          <div>
+            <span class="diff-label">Login Destination</span>
+            <span class="diff-value">BDU's own secure servers</span>
+          </div>
+        </div>
+        <div class="diff-row">
+          <span class="diff-icon">📜</span>
+          <div>
+            <span class="diff-label">SSL Certificate</span>
+            <span class="diff-value">Issued to bdu.edu.et</span>
+          </div>
+        </div>
+        <div class="diff-row">
+          <span class="diff-icon">📸</span>
+          <div>
+            <span class="diff-label">Images/Logos</span>
+            <span class="diff-value">Original high-quality assets</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-card fake">
+      <div class="compare-card-header"><i class="fas fa-times-circle"></i> 🚨 Phishing Clone</div>
+      <div class="compare-card-body">
+        <div class="diff-row">
+          <span class="diff-icon">🌐</span>
+          <div>
+            <span class="diff-label">URL</span>
+            <span class="diff-value" style="color:var(--red)">studentportal.bdu<strong>-login.com</strong></span>
+          </div>
+        </div>
+        <div class="diff-row">
+          <span class="diff-icon">🏛️</span>
+          <div>
+            <span class="diff-label">Domain Owner</span>
+            <span class="diff-value" style="color:var(--red)">Unknown/Anonymous attacker</span>
+          </div>
+        </div>
+        <div class="diff-row">
+          <span class="diff-icon">📧</span>
+          <div>
+            <span class="diff-label">Contact Links Work</span>
+            <span class="diff-value" style="color:var(--red)">No — static broken copies</span>
+          </div>
+        </div>
+        <div class="diff-row">
+          <span class="diff-icon">🔑</span>
+          <div>
+            <span class="diff-label">Login Destination</span>
+            <span class="diff-value" style="color:var(--red)">Attacker's data collection server</span>
+          </div>
+        </div>
+        <div class="diff-row">
+          <span class="diff-icon">📜</span>
+          <div>
+            <span class="diff-label">SSL Certificate</span>
+            <span class="diff-value" style="color:var(--red)">Issued to bdu-login.com (attacker)</span>
+          </div>
+        </div>
+        <div class="diff-row">
+          <span class="diff-icon">📸</span>
+          <div>
+            <span class="diff-label">Images/Logos</span>
+            <span class="diff-value" style="color:var(--red)">Downloaded copies, may differ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;">
+    <button class="btn-primary" onclick="goTo(4)">🧠 Test Your Skills — Take the Quiz</button>
+  </div>
+</div>
+
+<!-- ═══ PAGE 4 — QUIZ ═══ -->
+<div id="page-quiz" class="page">
+  <div class="quiz-wrap">
+    <h2 class="quiz-title">🧠 Phishing Detection Quiz</h2>
+    <p class="quiz-sub">Test your ability to identify phishing attacks. 6 real-world scenarios.</p>
+
+    <div class="quiz-progress-bar">
+      <div class="quiz-progress-fill" id="quiz-progress" style="width:0%"></div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="question-card active" id="q-1">
+      <div class="q-num">QUESTION 1 / 6</div>
+      <div class="q-text">You receive an email from <code>support@paypa1.com</code> asking you to verify your account urgently. What is this?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="answer(this,'wrong',1)"><span>A</span> A legitimate PayPal security alert</div>
+        <div class="quiz-option" onclick="answer(this,'correct',1)"><span>B</span> A phishing email — 'paypa<strong>1</strong>.com' uses number 1 instead of letter L</div>
+        <div class="quiz-option" onclick="answer(this,'wrong',1)"><span>C</span> A spam email, but harmless</div>
+        <div class="quiz-option" onclick="answer(this,'wrong',1)"><span>D</span> Can't tell without seeing the email body</div>
+      </div>
+      <div class="q-explanation" id="exp-1">
+        <strong>✅ Correct!</strong> This is a classic typosquatting attack. The domain uses the number "1" (one) instead of the letter "l" (el) in "paypal". Always check the sender domain character by character for suspicious substitutions.
+      </div>
+      <button class="btn-next" id="next-1" onclick="nextQ(2)">Next Question →</button>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-card" id="q-2">
+      <div class="q-num">QUESTION 2 / 6</div>
+      <div class="q-text">A website has a padlock icon (🔒) in the browser address bar. This means:</div>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="answer(this,'wrong',2)"><span>A</span> The website is 100% safe and legitimate</div>
+        <div class="quiz-option" onclick="answer(this,'wrong',2)"><span>B</span> The website is owned by a trusted organization</div>
+        <div class="quiz-option" onclick="answer(this,'correct',2)"><span>C</span> Your connection to the site is encrypted, but the site could still be malicious</div>
+        <div class="quiz-option" onclick="answer(this,'wrong',2)"><span>D</span> The site has been verified by the government</div>
+      </div>
+      <div class="q-explanation" id="exp-2">
+        <strong>✅ Correct!</strong> HTTPS/SSL only means the connection between you and the server is encrypted. It says nothing about whether the server belongs to a legitimate organization. Phishing sites routinely use SSL certificates — they're free and easy to get.
+      </div>
+      <button class="btn-next" id="next-2" onclick="nextQ(3)">Next Question →</button>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-card" id="q-3">
+      <div class="q-num">QUESTION 3 / 6</div>
+      <div class="q-text">You get a text message: "Your BDU account will be suspended in 24 hours. Click here: http://bit.ly/bdu-login". What do you do?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="answer(this,'wrong',3)"><span>A</span> Click the link immediately — you can't risk losing your account</div>
+        <div class="quiz-option" onclick="answer(this,'wrong',3)"><span>B</span> Click the link but don't enter your password</div>
+        <div class="quiz-option" onclick="answer(this,'correct',3)"><span>C</span> Ignore it, go directly to the official site by typing the URL yourself</div>
+        <div class="quiz-option" onclick="answer(this,'wrong',3)"><span>D</span> Forward it to friends to warn them</div>
+      </div>
+      <div class="q-explanation" id="exp-3">
+        <strong>✅ Correct!</strong> Never click shortened URLs in unsolicited messages. The urgency tactic ("24 hours") is a classic phishing pressure technique. Always navigate directly to the official site by typing the address yourself, or use a bookmark you trust.
+      </div>
+      <button class="btn-next" id="next-3" onclick="nextQ(4)">Next Question →</button>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-card" id="q-4">
+      <div class="q-num">QUESTION 4 / 6</div>
+      <div class="q-text">Which URL is the REAL Bahir Dar University student portal?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="answer(this,'wrong',4)"><span>A</span> studentportal.bdu-edu.com</div>
+        <div class="quiz-option" onclick="answer(this,'wrong',4)"><span>B</span> www.bdu-studentportal.net</div>
+        <div class="quiz-option" onclick="answer(this,'correct',4)"><span>C</span> studentportal.bdu.edu.et</div>
+        <div class="quiz-option" onclick="answer(this,'wrong',4)"><span>D</span> login.bdu.study.et</div>
+      </div>
+      <div class="q-explanation" id="exp-4">
+        <strong>✅ Correct!</strong> The real portal is on the official <code>.bdu.edu.et</code> domain. Ethiopia's academic institutions use <code>.edu.et</code>. Any other variation (.com, .net, hyphens, extra words) is a phishing site.
+      </div>
+      <button class="btn-next" id="next-4" onclick="nextQ(5)">Next Question →</button>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-card" id="q-5">
+      <div class="q-num">QUESTION 5 / 6</div>
+      <div class="q-text">Your friend sends you a Facebook message: "Check this out, I think you're in this photo: [link]". What is the most likely scenario?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="answer(this,'wrong',5)"><span>A</span> Your friend actually found a photo of you</div>
+        <div class="quiz-option" onclick="answer(this,'correct',5)"><span>B</span> Your friend's account was hacked and is spreading phishing links</div>
+        <div class="quiz-option" onclick="answer(this,'wrong',5)"><span>C</span> It's a news article tagging you</div>
+        <div class="quiz-option" onclick="answer(this,'wrong',5)"><span>D</span> Safe to click since it's from a friend</div>
+      </div>
+      <div class="q-explanation" id="exp-5">
+        <strong>✅ Correct!</strong> Social media phishing often hijacks compromised accounts to send credible-seeming messages. The "photo of you" trick is very common. If a message feels odd, verify with your friend through another channel (call or text) before clicking.
+      </div>
+      <button class="btn-next" id="next-5" onclick="nextQ(6)">Next Question →</button>
+    </div>
+
+    <!-- Q6 -->
+    <div class="question-card" id="q-6">
+      <div class="q-num">QUESTION 6 / 6</div>
+      <div class="q-text">Which of the following is the BEST protection against phishing attacks?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="answer(this,'wrong',6)"><span>A</span> Using a strong, long password</div>
+        <div class="quiz-option" onclick="answer(this,'wrong',6)"><span>B</span> Having antivirus software installed</div>
+        <div class="quiz-option" onclick="answer(this,'correct',6)"><span>C</span> Enabling Multi-Factor Authentication (MFA) on all accounts</div>
+        <div class="quiz-option" onclick="answer(this,'wrong',6)"><span>D</span> Never using public WiFi</div>
+      </div>
+      <div class="q-explanation" id="exp-6">
+        <strong>✅ Correct!</strong> MFA (also called 2FA) is the single most effective protection. Even if a phisher steals your password, they can't log in without your second factor. Enable MFA on email, banking, social media, and university accounts immediately.
+      </div>
+      <button class="btn-next" id="next-6" onclick="showScore()">See My Results →</button>
+    </div>
+
+    <!-- Score -->
+    <div class="score-screen" id="score-screen">
+      <div class="score-circle" id="score-circle"></div>
+      <h2 id="score-title" style="color:var(--text); margin-bottom:8px;"></h2>
+      <p id="score-message" style="color:var(--muted); margin-bottom:20px;"></p>
+      <div class="score-tips">
+        <h3 style="color:var(--cyan); margin-bottom:12px; font-size:0.9rem; letter-spacing:1px;">🛡️ KEY PROTECTION TIPS</h3>
+        <div class="tip-item"><i class="fas fa-check"></i> Always verify the full URL — including subdomain and TLD</div>
+        <div class="tip-item"><i class="fas fa-check"></i> Enable MFA on every important account</div>
+        <div class="tip-item"><i class="fas fa-check"></i> Never click shortened or unexpected links</div>
+        <div class="tip-item"><i class="fas fa-check"></i> HTTPS ≠ safe — always check the domain too</div>
+        <div class="tip-item"><i class="fas fa-check"></i> When in doubt, navigate directly — don't click</div>
+      </div>
+      <div style="margin-top:24px;">
+        <button class="btn-primary" onclick="goTo(5)">🛡️ View All Tips</button>
+        <button class="btn-outline" onclick="restartQuiz()">🔄 Retake Quiz</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE 5 — TIPS ═══ -->
+<div id="page-tips" class="page">
+  <div class="tips-wrap">
+    <h2 class="tips-title">🛡️ How to Protect Yourself</h2>
+    <p class="tips-sub">Essential practices every internet user should follow to stay safe from phishing.</p>
+
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-card-icon">🔗</div>
+        <h3>VERIFY URLS</h3>
+        <p>Always check the full domain. Look for typos, hyphens, or wrong TLDs (.com instead of .edu.et). Hover over links before clicking.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-card-icon">📱</div>
+        <h3>ENABLE MFA / 2FA</h3>
+        <p>Multi-factor authentication blocks 99.9% of account takeover attempts, even if your password is stolen.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-card-icon">🔒</div>
+        <h3>DON'T TRUST HTTPS ALONE</h3>
+        <p>The padlock only means encrypted connection — not a safe site. Phishing sites commonly use SSL certificates.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-card-icon">📧</div>
+        <h3>CHECK SENDER CAREFULLY</h3>
+        <p>Look at the full email address, not just the display name. support@paypa1.com ≠ support@paypal.com.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-card-icon">⏰</div>
+        <h3>IGNORE URGENCY</h3>
+        <p>Legitimate services don't demand immediate action under threat. Urgency = manipulation tactic.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-card-icon">📌</div>
+        <h3>BOOKMARK IMPORTANT SITES</h3>
+        <p>Save your bank, university, and email login pages as bookmarks. Never search for them and click random results.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-card-icon">🔑</div>
+        <h3>USE A PASSWORD MANAGER</h3>
+        <p>Password managers autofill only on the correct domain — they won't fill in a phishing site, alerting you automatically.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-card-icon">📚</div>
+        <h3>KEEP EDUCATING OTHERS</h3>
+        <p>Share this demo with friends, family, and classmates. Awareness is the best defense.</p>
+      </div>
+    </div>
+
+    <div class="about-box">
+      <i class="fas fa-user-shield"></i>
+      <div>
+        <h3>About This Project</h3>
+        <p>
+          This phishing awareness demo was created by <strong>Biniyam Ademasu Afework</strong> as an educational
+          cybersecurity project during B.Sc. Cyber Security studies at Bahir Dar University, Ethiopia (Graduated 2026, GPA: 3.43/4.00).<br><br>
+          The original project demonstrates how attackers clone real university portals using website mirroring tools.
+          This enhanced version adds interactive education stages, red flag analysis, and a quiz — to maximize security awareness impact.<br><br>
+          🔗 <a href="https://bini576.github.io">Portfolio</a> &nbsp;|&nbsp;
+          🐙 <a href="https://github.com/bini576">GitHub</a> &nbsp;|&nbsp;
+          💼 <a href="https://linkedin.com/in/biniyam-ademasu">LinkedIn</a>
+        </p>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:28px;">
+      <button class="btn-primary" onclick="goTo(0)">🔄 Restart Demo</button>
+      <a href="https://github.com/bini576/phishing-awaireness-project" class="btn-outline" target="_blank">View Source Code →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── State ──
+  let capturedUser = '', capturedPass = '';
+  let quizScore = 0, quizAnswered = {};
+
+  // ── Navigation ──
+  const pages = ['page-intro','page-phish','page-reveal','page-compare','page-quiz','page-tips'];
+  function goTo(idx) {
+    pages.forEach((p,i) => {
+      document.getElementById(p).classList.toggle('active', i === idx);
+      const pill = document.getElementById(`pill-${i}`);
+      pill.classList.remove('active','done');
+      if(i === idx) pill.classList.add('active');
+      else if(i < idx) pill.classList.add('done');
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // ── Phishing submit ──
+  function onPhishSubmit() {
+    const u = document.getElementById('fake-user').value.trim();
+    const p = document.getElementById('fake-pass').value.trim();
+    capturedUser = u || '(empty)';
+    capturedPass = p ? '•'.repeat(Math.min(p.length,10)) + p.slice(-2) : '(empty)';
+    document.getElementById('captured-user').textContent = capturedUser;
+    document.getElementById('captured-pass').textContent = capturedPass;
+    document.getElementById('captured-time').textContent = new Date().toLocaleString();
+    document.getElementById('captured-browser').textContent = navigator.userAgent.slice(0,55) + '...';
+    goTo(2);
+  }
+
+  // ── Quiz ──
+  function answer(el, result, qNum) {
+    if(quizAnswered[qNum]) return;
+    quizAnswered[qNum] = true;
+
+    const opts = el.parentElement.querySelectorAll('.quiz-option');
+    opts.forEach(o => o.classList.add('disabled'));
+
+    if(result === 'correct') {
+      el.classList.add('correct');
+      quizScore++;
+    } else {
+      el.classList.add('wrong');
+      // Highlight correct
+      opts.forEach(o => {
+        if(o.getAttribute('onclick').includes("'correct'")) o.classList.add('correct');
+      });
+    }
+
+    document.getElementById(`exp-${qNum}`).classList.add('show');
+    document.getElementById(`next-${qNum}`).classList.add('show');
+
+    const progress = (Object.keys(quizAnswered).length / 6) * 100;
+    document.getElementById('quiz-progress').style.width = progress + '%';
+  }
+
+  function nextQ(num) {
+    document.getElementById(`q-${num-1}`).classList.remove('active');
+    document.getElementById(`q-${num}`).classList.add('active');
+  }
+
+  function showScore() {
+    document.getElementById('q-6').classList.remove('active');
+    const ss = document.getElementById('score-screen');
+    ss.classList.add('show');
+
+    const sc = document.getElementById('score-circle');
+    const pct = Math.round((quizScore/6)*100);
+    if(pct >= 83) {
+      sc.style.background = 'rgba(0,255,136,0.15)';
+      sc.style.border = '3px solid #00ff88';
+      sc.style.color = '#00ff88';
+      sc.textContent = `${quizScore}/6`;
+      document.getElementById('score-title').textContent = '🏆 Excellent! Phishing Expert!';
+      document.getElementById('score-message').textContent = "You have strong phishing detection skills. Keep spreading this knowledge!";
+    } else if(pct >= 50) {
+      sc.style.background = 'rgba(245,158,11,0.15)';
+      sc.style.border = '3px solid #f59e0b';
+      sc.style.color = '#f59e0b';
+      sc.textContent = `${quizScore}/6`;
+      document.getElementById('score-title').textContent = '👍 Good — Room to Improve';
+      document.getElementById('score-message').textContent = "Decent awareness! Review the tips and try again to sharpen your skills.";
+    } else {
+      sc.style.background = 'rgba(255,59,59,0.15)';
+      sc.style.border = '3px solid #ff3b3b';
+      sc.style.color = '#ff3b3b';
+      sc.textContent = `${quizScore}/6`;
+      document.getElementById('score-title').textContent = '⚠️ At Risk — Study the Tips!';
+      document.getElementById('score-message').textContent = "You're vulnerable to phishing. Please review the protection tips carefully and share with others.";
+    }
+  }
+
+  function restartQuiz() {
+    quizScore = 0; quizAnswered = {};
+    document.getElementById('quiz-progress').style.width = '0%';
+    document.getElementById('score-screen').classList.remove('show');
+    for(let i=1; i<=6; i++) {
+      const card = document.getElementById(`q-${i}`);
+      card.classList.remove('active');
+      card.querySelectorAll('.quiz-option').forEach(o => {
+        o.classList.remove('correct','wrong','disabled');
+      });
+      document.getElementById(`exp-${i}`).classList.remove('show');
+      document.getElementById(`next-${i}`).classList.remove('show');
+    }
+    document.getElementById('q-1').classList.add('active');
+  }
+</script>
+</body>
+</html>
