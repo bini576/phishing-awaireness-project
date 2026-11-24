@@ -1,6 +1,6 @@
 <div align="center">
 
-# ðŸŽ£ Phishing Awareness Educational Demo
+# 🎣 Phishing Awareness Educational Demo
 ### Interactive Security Training Simulation & Credential Harvesting Demonstration
 
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
@@ -14,7 +14,7 @@
 ---
 
 > [!CAUTION]
-> ### âš ï¸ STRICT ETHICS & LEGAL DISCLAIMER
+> ### ⚠️ STRICT ETHICS & LEGAL DISCLAIMER
 > **THIS PROJECT IS FOR EDUCATIONAL, TRAINING, AND DEFENSIVE PURPOSES ONLY.**  
 > This demonstration was developed solely to educate students, end-users, and enterprise personnel about social engineering vectors, credential theft mechanics, and how to spot deceptive digital indicators.  
 > 
@@ -22,7 +22,7 @@
 
 ---
 
-## ðŸ“Œ Project Overview
+## 📌 Project Overview
 
 Social engineering remains the number one attack vector leveraged in modern cyber breaches. Technical perimeter defenses frequently fail when human trust is exploited. 
 
@@ -30,7 +30,7 @@ The **Phishing Awareness Educational Demo** simulates a realistic login gateway 
 
 ---
 
-## ðŸŽ¯ Key Educational Features
+## 🎯 Key Educational Features
 
 - **Realistic Portal Simulation:** Demonstrates authentic login UI components, error states, and responsive styling mirroring typical corporate or academic portals.
 - **Deception Indicator Showcase:**
@@ -39,30 +39,30 @@ The **Phishing Awareness Educational Demo** simulates a realistic login gateway 
   - Urgency prompts ("Your account will be suspended within 24 hours!").
 - **Zero-Storage Credential Handling:** Educational sandbox logic inspects form submission, sanitizes input in volatile memory without logging real plaintext passwords, and prevents data retention.
 - **Immediate Educational Debrief:** Redirects the user to an awareness breakdown explaining:
-  - ðŸ” How to inspect URL headers and domain syntax.
-  - ðŸ”’ Why padlocks don't guarantee legitimacy (TLS certificates on malicious domains).
-  - ðŸ›¡ï¸ The critical importance of Multi-Factor Authentication (MFA / 2FA).
-  - ðŸš¨ Proper enterprise reporting procedures to internal SOC / Helpdesk.
+  - 🔍 How to inspect URL headers and domain syntax.
+  - 🔒 Why padlocks don't guarantee legitimacy (TLS certificates on malicious domains).
+  - 🛡️ The critical importance of Multi-Factor Authentication (MFA / 2FA).
+  - 🚨 Proper enterprise reporting procedures to internal SOC / Helpdesk.
 
 ---
 
-## ðŸ”„ How It Works (Simulation Flow)
+## 🔄 How It Works (Simulation Flow)
 
 ```
 [ User Clicks Link in Training Email ]
-                 â”‚
-                 â–¼
+                 │
+                 ▼
      [ Simulated Login Page ] 
     (Displays Deceptive Clues)
-                 â”‚
+                 │
    [ User Enters Test Credentials ]
-                 â”‚
-                 â–¼
+                 │
+                 ▼
       [ Sanitized Request Handler ]
     (Zero-Storage / Educational Log)
-                 â”‚
-                 â–¼
-  [ ðŸ’¡ Interactive Learning Landing Page ]
+                 │
+                 ▼
+  [ 💡 Interactive Learning Landing Page ]
 - "You Fell for a Simulated Phishing Attack!"
 - Detailed inspection of missed red flags
 - Practical mitigation checklist (MFA, URL Check)
@@ -70,14 +70,14 @@ The **Phishing Awareness Educational Demo** simulates a realistic login gateway 
 
 ---
 
-## ðŸ’» Tech Stack
+## 💻 Tech Stack
 
 - **Frontend:** Vanilla JavaScript (ES6+), HTML5 Semantic Elements, Modern CSS3 (Flexbox/Grid, Responsive Design)
 - **Local Server (Optional for hosting demo):** Node.js / Express or Python standard `http.server`
 
 ---
 
-## ðŸš€ Installation & Local Execution
+## 🚀 Installation & Local Execution
 
 To run this awareness demonstration on a local, isolated environment:
 
@@ -105,7 +105,7 @@ Simply double-click `index.html` or open it with your preferred web browser.
 
 ---
 
-## ðŸ“¸ Demo Walkthrough
+## 📸 Demo Walkthrough
 
 <div align="center">
 
@@ -118,18 +118,18 @@ Simply double-click `index.html` or open it with your preferred web browser.
 
 ---
 
-## ðŸ›¡ï¸ Core Security Lessons Taught
+## 🛡️ Core Security Lessons Taught
 
 This demonstration forms the foundation for hands-on cybersecurity training modules:
 
 1. **URL & Domain Anatomy:** Always inspect the Fully Qualified Domain Name (FQDN) rather than relying on page title or logo.
-2. **Beware of False Urgency:** Phishers weaponize psychological triggersâ€”fear, urgency, and authority.
+2. **Beware of False Urgency:** Phishers weaponize psychological triggers—fear, urgency, and authority.
 3. **MFA Neutralization Defense:** Phishing resistance requires hardware security keys (FIDO2 / WebAuthn) or time-based OTP rather than simple SMS codes.
 4. **Report, Don't Ignore:** Quick reporting allows enterprise SOC teams to null-route malicious domains campus-wide.
 
 ---
 
-## ðŸ“„ License & Author
+## 📄 License & Author
 
 Distributed under the **MIT License**. Created by [Biniyam Ademasu Afework](https://github.com/bini576) for cyber security education and awareness advocacy.
 
